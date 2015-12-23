@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectInstaller));
             this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
             this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
             // 
@@ -43,9 +44,7 @@
             this.serviceInstaller1.DisplayName = "SampleWindowService";
             this.serviceInstaller1.ServiceName = "Service1";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
-            this.serviceInstaller1.Committed += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_Committed);
-            this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
-            // 
+            
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {

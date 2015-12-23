@@ -12,22 +12,15 @@ namespace SampleWindowService
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main(string[] args)
-        {
-            // Set args.length to 0 to debug the service.
-            if (args.Length > 0)
-            {
-                var service = new Service1();
-                service.StartProcessing();
-                Console.ReadLine();
-
-            }
-            else
-            {
-                ServiceBase[] ServicesToRun;
-                ServicesToRun = new ServiceBase[] { new Service1(), };
-                ServiceBase.Run(ServicesToRun);
-            }
+        static void Main()
+        {            
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[] 
+			{ 
+				new Service1() 
+			};
+            ServiceBase.Run(ServicesToRun);
         }
+        
     }
 }

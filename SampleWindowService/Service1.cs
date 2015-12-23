@@ -18,38 +18,15 @@ namespace SampleWindowService
 
         protected override void OnStart(string[] args)
         {
-            base.OnStart(args);
-            StartProcessing();
+            String applicationName = "cmd.exe";
+
+            
+            ApplicationLoader.PROCESS_INFORMATION procInfo;
+            ApplicationLoader.StartProcess(applicationName, out procInfo);
         }
 
         protected override void OnStop()
         {
-            base.OnStop();
-        }
-
-        public void StartProcessing()
-        {
-            ThreadStart starter = new ThreadStart(bw_DoWork);
-            Thread t = new Thread(starter);
-            t.Start();
-        }
-
-        private void bw_DoWork()
-        {
-            try
-            {
-                var processStartInfo = new ProcessStartInfo();
-                string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                processStartInfo.WorkingDirectory = @"C:\Users\" + userName.Split('\\')[1];
-                processStartInfo.FileName = "cmd.exe";
-                var proc = Process.Start(processStartInfo);                
-                proc.WaitForExit();
-            }
-            catch (Exception ex)
-            {
-                EventLog.WriteEntry("Application", ex.ToString(), EventLogEntryType.Error);
-            }
-
         }
     }
 }
