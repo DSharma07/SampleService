@@ -2,6 +2,7 @@
 using System.Security;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Management;
 
 namespace SampleWindowService
 {    
@@ -117,12 +118,28 @@ namespace SampleWindowService
             uint winlogonPid = 0;
             IntPtr hUserTokenDup = IntPtr.Zero, hPToken = IntPtr.Zero, hProcess = IntPtr.Zero;
             procInfo = new PROCESS_INFORMATION();
+            string userName = null;
                         
             uint dwSessionId = WTSGetActiveConsoleSessionId();
-                        
+
+            //Get User Name
+            var query = new ObjectQuery(
+                   "SELECT * FROM Win32_Process WHERE Name = 'explorer.exe'");
+
+            var explorerProcesses = new ManagementObjectSearcher(query).Get();
+
+            foreach (ManagementObject mo in explorerProcesses)
+            {
+                string[] ownerInfo = new string[2];
+                mo.InvokeMethod("GetOwner", (object[])ownerInfo);
+
+                userName = (ownerInfo[0]);
+            }
+
             Process[] processes = Process.GetProcessesByName("winlogon");
             foreach (Process p in processes)
             {
+                
                 if ((uint)p.SessionId == dwSessionId)
                 {
                     winlogonPid = (uint)p.Id;
@@ -164,8 +181,8 @@ namespace SampleWindowService
                                             ref sa,                 
                                             false,                 
                                             dwCreationFlags,        
-                                            IntPtr.Zero,            
-                                            null,                   
+                                            IntPtr.Zero,
+                                            @"C:\Users\" + userName,                   
                                             ref si,                 
                                             out procInfo           
                                             );
